@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Popa_Sebastian_Ioan_Lab2.Data;
 using Popa_Sebastian_Ioan_Lab2.Models;
@@ -27,6 +28,12 @@ namespace Popa_Sebastian_Ioan_Lab2.Pages.Books
             {
                 return NotFound();
             }
+            var authorList = _context.Author.Select(x => new
+            {
+                x.ID,
+                FullName = x.FirstName + " " + x.LastName
+            });
+            ViewData["AuthorID"] = new SelectList(authorList, "ID", "FullName");
 
             var book = await _context.Book.FirstOrDefaultAsync(m => m.ID == id);
             if (book == null)

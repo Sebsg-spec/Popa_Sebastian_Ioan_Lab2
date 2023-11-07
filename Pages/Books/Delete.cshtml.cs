@@ -30,7 +30,7 @@ namespace Popa_Sebastian_Ioan_Lab2.Pages.Books
             }
 
             var book = await _context.Book.FirstOrDefaultAsync(m => m.ID == id);
-
+            
             if (book == null)
             {
                 return NotFound();
@@ -41,6 +41,7 @@ namespace Popa_Sebastian_Ioan_Lab2.Pages.Books
             }
             return Page();
         }
+
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
