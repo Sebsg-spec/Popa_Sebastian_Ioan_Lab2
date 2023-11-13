@@ -31,7 +31,12 @@ namespace Popa_Sebastian_Ioan_Lab2.Pages.Borrowings
 
 
 
-            var borrowing = await _context.Borrowing.FirstOrDefaultAsync(m => m.ID == id);
+            var borrowing = await _context.Borrowing
+           .Include(b => b.Book)
+           .Include(b => b.Member)
+           .AsNoTracking()
+           .FirstOrDefaultAsync(m => m.ID == id);
+
             if (borrowing == null)
             {
                 return NotFound();
@@ -40,21 +45,7 @@ namespace Popa_Sebastian_Ioan_Lab2.Pages.Borrowings
             {
                 Borrowing = borrowing;
             }
-            borrowing = await _context.Borrowing
-           .Include(b => b.Book)
-           .Include(b => b.Member)
-           .AsNoTracking()
-           .FirstOrDefaultAsync(m => m.ID == id);
-
-            var bookList = _context.Member.Select(x => new
-            {
-                x.ID,
-                FullName = x.FirstName + " " + x.LastName
-            });
-
-            ViewData["BookID"] = new SelectList(_context.Book, "ID", "Title");
-            ViewData["MemberID"] = new SelectList(_context.Member, "ID", "FullName");
-
+         
             return Page();
         }
     }
